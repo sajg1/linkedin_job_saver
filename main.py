@@ -24,6 +24,11 @@ email.send_keys(EMAIL)
 password.send_keys(PASSWORD)
 signin_button_page_two.click()
 
+first_job_save_button = driver.find_element(By.XPATH, '/html/body/div[7]/div[3]/div[3]/div[2]/div/section[2]/div/div/'
+                                                      'div[1]/div/div[1]/div/div[2]/div[3]/div/button')
+time.sleep(5)
+first_job_save_button.click()
+
 
 
 
