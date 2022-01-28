@@ -14,10 +14,11 @@ driver = webdriver.Chrome(executable_path=chrome_driver_path)
 driver.get('https://www.linkedin.com/jobs/search/?f_WT=2%2C1%2C3&geoId=100752109&keywords=junior%20developer&location='
            'Scotland%2C%20United%20Kingdom')
 
+# SIGNIN AND MAXIMISE WINDOW
 signin_button_one = driver.find_element(By.XPATH, '/html/body/div[3]/header/nav/div/a[2]')
 signin_button_one.click()
 driver.maximize_window()
-time.sleep(5)
+time.sleep(3)
 
 email = driver.find_element(By.NAME, 'session_key')
 password = driver.find_element(By.NAME, 'session_password')
@@ -31,18 +32,44 @@ message_pop_up = driver.find_element(By.CLASS_NAME, 'msg-overlay-bubble-header__
 message_pop_up.click()
 time.sleep(2)
 
-# SAVE JOB POST
-first_job_save_button = driver.find_element(By.CLASS_NAME, 'jobs-save-button')
-first_job_save_button.click()
+# ACCESS ALL JOBS ON LEFT HAND SIDE
+jobs = driver.find_elements(By.CLASS_NAME, 'jobs-search-results__list-item')
 
-# SCROLL TO COMPANY SECTION OF JOB DESCRIPTION AND FOLLOW COMPANY
-time.sleep(3)
-job_description = driver.find_element(By.CLASS_NAME, 'jobs-search__right-rail')
-job_description.click()
-html = driver.find_element(By.TAG_NAME, 'html')
-html.send_keys(Keys.END)
-time.sleep(2)
-company_follow = driver.find_element(By.CLASS_NAME, 'follow')
-company_follow.click()
+for job in jobs:
+    job.click()
+    time.sleep(2)
+
+    # SAVE JOB POST
+    job_save_button = driver.find_element(By.CLASS_NAME, 'jobs-save-button')
+    job_save_button.click()
+    time.sleep(2)
+
+    # DISMISS NOTIFICATION BOTTOM LEFT
+    toast = driver.find_element(By.CLASS_NAME, 'artdeco-toast-item__dismiss')
+    toast.click()
+
+    # SCROLL TO COMPANY SECTION OF JOB DESCRIPTION AND FOLLOW COMPANY
+    time.sleep(3)
+    job_description = driver.find_element(By.CLASS_NAME, 'jobs-search__right-rail')
+    job_description.click()
+    html = driver.find_element(By.TAG_NAME, 'html')
+    html.send_keys(Keys.END)
+    html.send_keys(Keys.PAGE_UP)
+    time.sleep(2)
+    try:
+        company_follow = driver.find_element(By.CLASS_NAME, 'follow')
+        company_follow.click()
+    except NoSuchElementException:
+        continue
+    time.sleep(2)
+
+    # DISMISS NOTIFICATION BOTTOM LEFT
+    toast = driver.find_element(By.CLASS_NAME, 'artdeco-toast-item__dismiss')
+    toast.click()
+
+
+
+
+
 
 
